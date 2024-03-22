@@ -15,6 +15,7 @@ const Blog = mongoose.model('Blog', blogSchema)
 const password = process.argv[2]
 
 const mongoUrl = `mongodb+srv://moralesandres:${password}@cluster0.rxqytn8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+
 mongoose.connect(mongoUrl)
     .then(result => {
         console.log('Connected to MongoDB')
@@ -39,7 +40,6 @@ app.get('/api/blogs', (request, response) => {
 
 app.post('/api/blogs', (request, response) => {
   const blog = new Blog(request.body)
-
   blog
     .save()
     .then(result => {
