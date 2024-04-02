@@ -139,7 +139,7 @@ describe('favoriteBlog ', () => {
       __v: 0
     }  
   ]
-  test('blog más me gusta', () => {
+  test('blog que más me gusta', () => {
     const result = listHelper.favoriteBlog(blogs)
     expect(result).toEqual({
       title: "Canonical string reduction",

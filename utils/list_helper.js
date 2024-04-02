@@ -10,15 +10,12 @@ const dummy = (blogs) => {
   }
   
   const favoriteBlog = (blogs) => {
-    let mayor = 0
-    let objeto ={}
-    for(let i=0; i<blogs.length; i++){
-      if(blogs[i].likes >= mayor){
-        mayor = blogs[i].likes
-        objeto = {"title": blogs[i].title, "author":blogs[i].author, "likes":blogs[i].likes}
-      }
+    const mayor = (mayr, blog) => {
+      return blog.likes >= mayr.likes 
+                ? {"author": blog.author, "likes": blog.likes, "title": blog.title}
+                : mayr
     }
-    return objeto
+    return blogs.reduce(mayor, {"likes": 0})
   }
   
   module.exports = {
