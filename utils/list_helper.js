@@ -24,15 +24,13 @@ const dummy = (blogs) => {
     const autoresUnicos = lodash.uniq(autores)
     const autoresFiltrados = lodash.countBy(autores)
     let maximo =-1
-    let objeto = {}
-    for(autor of autoresUnicos){
-      console.log(autoresFiltrados[autor] )
-      if(autoresFiltrados[autor] > maximo){
-        maximo = autoresFiltrados[autor]
-        objeto = {"author": autor, "blogs": maximo}
+    const prueba = autoresUnicos.map(author => {
+      if(autoresFiltrados[author] > maximo){
+        maximo = autoresFiltrados[author]
+        return {"author": author, "blogs": maximo}
       }
-    }
-    return  objeto
+    })
+    return  prueba.find(objeto => objeto.blogs === maximo)    
   }
   
   module.exports = {
