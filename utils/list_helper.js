@@ -32,7 +32,21 @@ const dummy = (blogs) => {
     })
     return  prueba.find(objeto => objeto.blogs === maximo)    
   }
+
+    const mostLikes = (blogs) => {
+      const lodash = require('lodash')
+      const autoresConLikes = blogs.map(blog => {return {"author":blog.author, "likes": blog.likes}})
+      const unicos = lodash.uniqBy(autoresConLikes,'author').map(objeto => {return {"author":objeto.author,"likes":0}})
+      for(autor of unicos){
+        for(objeto of autoresConLikes){
+          if(autor.author.localeCompare(objeto.author) ===0){
+            autor.likes+=objeto.likes
+          }
+        }
+      }
+      return lodash(unicos).maxBy('likes')
+    }
   
   module.exports = {
-    dummy, totalLikes, favoriteBlog, mostBlogs
+    dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
   }
