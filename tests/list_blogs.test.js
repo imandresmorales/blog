@@ -72,6 +72,17 @@ test("propiedad likes falta en la solicitud", async () => {
     expect(response.body).toHaveLength(initialBlogs.length +1)
 })
 
+test("faltan las propiedades title o url ", async () => {
+    const newBlog = {
+        title: "Blog 3",
+        author: "Author 3",
+      }
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
