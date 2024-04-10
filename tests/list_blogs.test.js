@@ -41,6 +41,23 @@ test("verifique que la propiedad de identificador único", async () => {
     expect(response.body[0].id).toBeDefined()
 })
 
+test("solitud HTTP POST a la URL /api/blogs", async () => {
+    const newBlog = {
+        title: "Blog 3",
+        author: "Author 3",
+        url: "http://blog3.com",
+        likes: 2
+      }
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    const autores = response.body.map(blog => blog.author)
+    expect(autores).toContain("Author 3")
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
