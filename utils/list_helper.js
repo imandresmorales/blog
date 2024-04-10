@@ -35,18 +35,18 @@ const dummy = (blogs) => {
 
     const mostLikes = (blogs) => {
       const lodash = require('lodash')
-      const autoresConLikes = blogs.map(blog => {return {"author":blog.author, "likes": blog.likes}})
-      const unicos = lodash.uniqBy(autoresConLikes,'author').map(objeto => {return {"author":objeto.author,"likes":0}})
+      const authorsWithLikes = blogs.map(blog => {return {"author":blog.author, "likes": blog.likes}})
+      const unicos = lodash.uniqBy(authorsWithLikes,'author').map(objeto => {return {"author":objeto.author,"likes":0}})
       for(autor of unicos){
-        for(objeto of autoresConLikes){
-          if(autor.author.localeCompare(objeto.author) ===0){
-            autor.likes+=objeto.likes
+        for(object of authorsWithLikes){
+          if(autor.author.localeCompare(object.author) ===0){
+            autor.likes+=object.likes
           }
         }
       }
       return lodash(unicos).maxBy('likes')
     }
-  
+
   module.exports = {
     dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
   }
