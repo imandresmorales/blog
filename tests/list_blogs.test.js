@@ -58,6 +58,20 @@ test("solitud HTTP POST a la URL /api/blogs", async () => {
     expect(autores).toContain("Author 3")
 })
 
+test("propiedad likes falta en la solicitud", async () => {
+    const newBlog = {
+        title: "Blog 3",
+        author: "Author 3",
+        url: "http://blog3.com",
+      }
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(initialBlogs.length +1)
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
