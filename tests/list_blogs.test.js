@@ -2,6 +2,7 @@ const supertest = require("supertest");
 const mongoose = require('mongoose')
 const app = require('../app');
 const Blog = require('../models/blog')
+mongoose.set("bufferTimeoutMS", 30000)
 
 const api = supertest(app)
 
@@ -19,6 +20,8 @@ const initialBlogs = [
       likes: 20
     }
   ]
+
+
 beforeEach(async () => {
     await Blog.deleteMany({})
     let blogObject = new Blog(initialBlogs[0])
@@ -26,6 +29,15 @@ beforeEach(async () => {
     blogObject = new Blog(initialBlogs[1])
     await blogObject.save()
 })
+
+test("delete a single blog post resource", async () => {
+    const initialBlogs2 = await api.get('/api/blogs')
+    const blog =  initialBlogs2.body[0]
+    await api
+        .delete(`/api/blogs/${blog.id}`)
+        .expect(204)
+})
+
 test("solicitud HTTP GET a la URL /api/blogs", async () => {
     const response = await api
         .get('/api/blogs')
