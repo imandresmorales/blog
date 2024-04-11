@@ -21,7 +21,6 @@ const initialBlogs = [
     }
   ]
 
-
 beforeEach(async () => {
     await Blog.deleteMany({})
     let blogObject = new Blog(initialBlogs[0])
@@ -31,11 +30,17 @@ beforeEach(async () => {
 })
 
 test("delete a single blog post resource", async () => {
-    const initialBlogs2 = await api.get('/api/blogs')
-    const blog =  initialBlogs2.body[0]
+    const initialStatus = await api.get('/api/blogs')
+    const blog =  initialStatus.body[0]
     await api
         .delete(`/api/blogs/${blog.id}`)
         .expect(204)
+
+    const finalStatus = await api.get('/api/blogs')
+    expect(finalStatus.body).toHaveLength(initialStatus.body.length - 1)
+
+    const titles =finalStatus.body.map(b => b.title)
+    expect(titles).not.toContain(blog.title)
 })
 
 test("solicitud HTTP GET a la URL /api/blogs", async () => {
