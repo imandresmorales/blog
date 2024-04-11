@@ -1,7 +1,8 @@
 const supertest = require("supertest");
 const mongoose = require('mongoose')
 const app = require('../app');
-const Blog = require('../models/blog')
+const Blog = require('../models/blog');
+const { update } = require("lodash");
 mongoose.set("bufferTimeoutMS", 30000)
 
 const api = supertest(app)
@@ -98,6 +99,22 @@ test("faltan las propiedades title o url ", async () => {
         .post('/api/blogs')
         .send(newBlog)
         .expect(400)
+})
+
+test("actualizar la información de una publicación de blog", async () => {
+    const initialStatus = await api.get('/api/blogs')
+    const blogs =  initialStatus.body
+    const blog ={
+        title: "Blog 2",
+        author: "Author 2",
+        url: "http://blog2.com",
+        likes: 0
+      }
+    const id = blogs.filter(b => b.title === "Blog 2")[0].id
+    const update = await api
+        .put(`/api/blogs/${id}`)
+        .send(blog)
+    expect(update.body).toEqual({...blog, id: id})
 })
 
 afterAll(() => {
