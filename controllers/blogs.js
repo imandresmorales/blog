@@ -2,6 +2,14 @@ const blogsRouter = require('express').Router()
 const { request } = require('../app')
 const Blog = require('../models/blog')
 
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+
 blogsRouter.get('/', (request, response) => {
     Blog
       .find({})
